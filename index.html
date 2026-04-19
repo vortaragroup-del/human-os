@@ -1,286 +1,273 @@
-HUMAN OS REAL STARTUP FINAL
-Production SaaS Stack
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Human OS • Real SaaS App</title>
 
-Tech:
-- Next.js 14
-- Supabase Auth
-- PostgreSQL DB
-- Stripe Billing
-- OpenAI API
-- Tailwind CSS
-- Vercel Deploy
-
-==================================================
-1. PROJECT STRUCTURE
-==================================================
-
-human-os/
- ├ app/
- │ ├ layout.tsx
- │ ├ page.tsx
- │ ├ login/page.tsx
- │ ├ dashboard/page.tsx
- │ ├ api/ai/route.ts
- │ └ api/checkout/route.ts
- ├ lib/
- │ ├ supabase.ts
- │ ├ stripe.ts
- │ └ openai.ts
- ├ components/
- │ ├ Navbar.tsx
- │ └ Card.tsx
- ├ .env.local
- ├ package.json
- └ tailwind.config.js
-
-==================================================
-2. INSTALL COMMAND
-==================================================
-
-npx create-next-app@latest human-os
-cd human-os
-
-npm install @supabase/supabase-js stripe openai
-
-==================================================
-3. .env.local
-==================================================
-
-NEXT_PUBLIC_SUPABASE_URL=your_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_key
-
-SUPABASE_SERVICE_ROLE_KEY=your_service_key
-
-OPENAI_API_KEY=your_openai_key
-
-STRIPE_SECRET_KEY=your_key
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-
-==================================================
-4. lib/supabase.ts
-==================================================
-
-import { createClient } from "@supabase/supabase-js";
-
-export const supabase = createClient(
- process.env.NEXT_PUBLIC_SUPABASE_URL!,
- process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-
-==================================================
-5. lib/stripe.ts
-==================================================
-
-import Stripe from "stripe";
-
-export const stripe = new Stripe(
- process.env.STRIPE_SECRET_KEY!,
- { apiVersion: "2024-06-20" }
-);
-
-==================================================
-6. lib/openai.ts
-==================================================
-
-import OpenAI from "openai";
-
-export const openai = new OpenAI({
- apiKey: process.env.OPENAI_API_KEY
-});
-
-==================================================
-7. app/page.tsx
-==================================================
-
-import Link from "next/link";
-
-export default function Home(){
- return (
-  <main className="p-10 text-center">
-   <h1 className="text-6xl font-bold">Human OS</h1>
-   <p className="mt-4 text-xl">
-    AI Operating System For Your Life
-   </p>
-
-   <Link href="/login">
-    <button className="mt-8 px-6 py-3 bg-black text-white rounded-xl">
-      Start Free
-    </button>
-   </Link>
-  </main>
- )
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
 }
 
-==================================================
-8. app/login/page.tsx
-==================================================
-
-"use client";
-
-import { useState } from "react";
-import { supabase } from "@/lib/supabase";
-
-export default function Login(){
-
-const[email,setEmail]=useState("");
-
-async function signIn(){
- await supabase.auth.signInWithOtp({ email });
- alert("Check email login link");
+body{
+background:#0f172a;
+color:white;
+display:flex;
+min-height:100vh;
 }
 
-return(
-<div className="p-10 max-w-md mx-auto">
-<h1 className="text-3xl font-bold">Login</h1>
+.sidebar{
+width:240px;
+background:#111827;
+padding:22px;
+border-right:1px solid rgba(255,255,255,.08);
+}
 
-<input
-className="border p-3 w-full mt-4"
-placeholder="Email"
-onChange={e=>setEmail(e.target.value)}
-/>
+.logo{
+font-size:24px;
+font-weight:bold;
+margin-bottom:24px;
+}
 
-<button
-onClick={signIn}
-className="w-full mt-4 bg-black text-white p-3 rounded-xl"
->
-Continue
-</button>
+.menu a{
+display:block;
+padding:12px;
+margin-bottom:8px;
+border-radius:12px;
+text-decoration:none;
+color:white;
+background:#1e293b;
+}
+
+.main{
+flex:1;
+padding:24px;
+}
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:22px;
+}
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:18px;
+margin-bottom:18px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:16px;
+}
+
+.big{
+font-size:34px;
+font-weight:bold;
+margin-top:8px;
+}
+
+input,textarea{
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+margin-top:10px;
+background:#334155;
+color:white;
+}
+
+button{
+padding:12px 16px;
+border:none;
+border-radius:12px;
+background:#22c55e;
+color:white;
+font-weight:bold;
+cursor:pointer;
+margin-top:10px;
+width:100%;
+}
+
+.task{
+background:#334155;
+padding:10px;
+border-radius:10px;
+margin-top:10px;
+}
+
+.chat{
+max-height:220px;
+overflow-y:auto;
+}
+
+.small{
+opacity:.75;
+font-size:14px;
+margin-top:8px;
+}
+
+@media(max-width:900px){
+body{
+display:block;
+}
+.sidebar{
+width:100%;
+border-right:none;
+border-bottom:1px solid rgba(255,255,255,.08);
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<div class="logo">🚀 Human OS</div>
+
+<div class="menu">
+<a href="#">Dashboard</a>
+<a href="#">Tasks</a>
+<a href="#">Goals</a>
+<a href="#">Habits</a>
+<a href="#">AI Coach</a>
+<a href="#">Billing</a>
+<a href="#">Settings</a>
+</div>
+</div>
+
+<div class="main">
+
+<div class="topbar">
+<h1>Welcome Back</h1>
+<div>Pro Plan 👑</div>
+</div>
+
+<div class="grid">
+
+<div class="card">
+<h3>Focus Hours</h3>
+<div class="big">28h</div>
+<p class="small">This Week</p>
+</div>
+
+<div class="card">
+<h3>Tasks Done</h3>
+<div class="big">16</div>
+<p class="small">Last 7 Days</p>
+</div>
+
+<div class="card">
+<h3>Habit Streak</h3>
+<div class="big">21</div>
+<p class="small">Days</p>
+</div>
+
+<div class="card">
+<h3>Revenue Goal</h3>
+<div class="big">$4,200</div>
+<p class="small">Monthly</p>
+</div>
 
 </div>
-)
+
+<div class="card">
+<h2>🎯 Daily Mission</h2>
+<input id="goal" placeholder="Enter today’s main target">
+<button onclick="saveGoal()">Save Mission</button>
+<p class="small" id="goalText"></p>
+</div>
+
+<div class="card">
+<h2>✅ Task Manager</h2>
+<input id="taskInput" placeholder="Add a task">
+<button onclick="addTask()">Add Task</button>
+<div id="tasks"></div>
+</div>
+
+<div class="card">
+<h2>🤖 AI Coach</h2>
+<input id="chatInput" placeholder="Ask for guidance">
+<button onclick="coach()">Send</button>
+<div class="chat" id="chatBox"></div>
+</div>
+
+<div class="card">
+<h2>🧠 Notes Vault</h2>
+<textarea id="notes" rows="4" placeholder="Store ideas and plans"></textarea>
+<button onclick="saveNotes()">Save Notes</button>
+<p class="small" id="saved"></p>
+</div>
+
+<div class="card">
+<h2>💳 Upgrade Billing</h2>
+<button onclick="alert('Stripe checkout connect next')">Upgrade to Elite</button>
+</div>
+
+</div>
+
+<script>
+function saveGoal(){
+let g=document.getElementById("goal").value;
+localStorage.setItem("goal",g);
+document.getElementById("goalText").innerText="Mission Locked: "+g;
+}
+document.getElementById("goalText").innerText=
+localStorage.getItem("goal")?"Mission Locked: "+localStorage.getItem("goal"):"";
+
+function addTask(){
+let t=document.getElementById("taskInput").value;
+if(t=="") return;
+let div=document.createElement("div");
+div.className="task";
+div.innerHTML=t;
+document.getElementById("tasks").appendChild(div);
+document.getElementById("taskInput").value="";
 }
 
-==================================================
-9. app/dashboard/page.tsx
-==================================================
-
-export default function Dashboard(){
- return(
- <div className="p-10 grid gap-6">
-
- <div className="p-6 rounded-2xl shadow border">
-   <h2 className="text-2xl font-bold">Today's Mission</h2>
-   <p>Finish highest leverage task.</p>
- </div>
-
- <div className="p-6 rounded-2xl shadow border">
-   <h2 className="text-2xl font-bold">AI Coach</h2>
-   <p>Stay consistent. One win today.</p>
- </div>
-
- <div className="p-6 rounded-2xl shadow border">
-   <h2 className="text-2xl font-bold">Stats</h2>
-   <p>Focus Hours: 12</p>
- </div>
-
- </div>
- )
+function saveNotes(){
+localStorage.setItem("notes",document.getElementById("notes").value);
+document.getElementById("saved").innerText="Saved";
 }
+document.getElementById("notes").value=
+localStorage.getItem("notes")||"";
 
-==================================================
-10. app/api/ai/route.ts
-==================================================
+function coach(){
+let q=document.getElementById("chatInput").value;
+if(q=="") return;
 
-import { openai } from "@/lib/openai";
+let box=document.getElementById("chatBox");
 
-export async function POST(req:Request){
+let user=document.createElement("div");
+user.className="task";
+user.innerText="You: "+q;
+box.appendChild(user);
 
- const {message}=await req.json();
+let ai=document.createElement("div");
+ai.className="task";
 
- const res = await openai.chat.completions.create({
-   model:"gpt-4o-mini",
-   messages:[
-    {role:"system",content:"You are Human OS Coach"},
-    {role:"user",content:message}
-   ]
- });
+let replies=[
+"Focus on the highest leverage move first.",
+"Reduce noise and execute one mission.",
+"Systems beat motivation every time.",
+"Discipline creates freedom.",
+"Move now. Improve later."
+];
 
- return Response.json({
-   reply: res.choices[0].message.content
- });
+ai.innerText="AI: "+replies[Math.floor(Math.random()*replies.length)];
+box.appendChild(ai);
+
+document.getElementById("chatInput").value="";
+box.scrollTop=box.scrollHeight;
 }
+</script>
 
-==================================================
-11. app/api/checkout/route.ts
-==================================================
-
-import { stripe } from "@/lib/stripe";
-
-export async function POST(){
-
-const session = await stripe.checkout.sessions.create({
- payment_method_types:["card"],
- mode:"subscription",
- line_items:[
- {
-  price_data:{
-   currency:"usd",
-   product_data:{name:"Human OS Pro"},
-   recurring:{interval:"month"},
-   unit_amount:1900
-  },
-  quantity:1
- }
- ],
- success_url:process.env.NEXT_PUBLIC_SITE_URL+"/dashboard",
- cancel_url:process.env.NEXT_PUBLIC_SITE_URL
-});
-
-return Response.json({url:session.url});
-
-}
-
-==================================================
-12. DATABASE TABLES
-==================================================
-
-create table profiles(
- id uuid primary key,
- email text
-);
-
-create table tasks(
- id bigint generated always as identity primary key,
- user_id uuid,
- title text,
- completed boolean default false
-);
-
-==================================================
-13. RUN
-==================================================
-
-npm run dev
-
-==================================================
-14. DEPLOY
-==================================================
-
-Push to GitHub
-Import into Vercel
-Add ENV variables
-Deploy
-
-==================================================
-15. RESULT
-==================================================
-
-Real SaaS Startup Includes:
-
-✔ Landing Page
-✔ Email Login
-✔ Dashboard
-✔ OpenAI Coach
-✔ Stripe Monthly Billing
-✔ PostgreSQL Database
-✔ Mobile Ready
-✔ Production Ready
-
-==================================================
-NEXT MOVE
-==================================================
-
-Need full downloadable zip source code?
-Say:
-
-CREATE HUMAN OS ZIP
+</body>
+ </html>
