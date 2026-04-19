@@ -1,264 +1,278 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Human OS • Real SaaS App</title>
+<title>Human OS v2</title>
 
 <style>
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial,sans-serif;
+font-family:Arial, sans-serif;
 }
 
 body{
-background:#0f172a;
+background:linear-gradient(135deg,#0f172a,#1e293b);
 color:white;
-display:flex;
-min-height:100vh;
+padding:20px;
+transition:0.3s;
 }
 
-.sidebar{
-width:240px;
-background:#111827;
-padding:22px;
-border-right:1px solid rgba(255,255,255,.08);
+.light{
+background:#f1f5f9;
+color:#111827;
 }
 
-.logo{
-font-size:24px;
-font-weight:bold;
-margin-bottom:24px;
-}
-
-.menu a{
-display:block;
-padding:12px;
-margin-bottom:8px;
-border-radius:12px;
-text-decoration:none;
-color:white;
-background:#1e293b;
-}
-
-.main{
-flex:1;
-padding:24px;
-}
-
-.topbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:22px;
+.container{
+max-width:520px;
+margin:auto;
 }
 
 .card{
-background:#1e293b;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(10px);
 padding:20px;
 border-radius:18px;
-margin-bottom:18px;
+margin-bottom:16px;
+box-shadow:0 10px 25px rgba(0,0,0,.25);
 }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:16px;
+.light .card{
+background:white;
 }
 
-.big{
+h1{
 font-size:34px;
-font-weight:bold;
-margin-top:8px;
+margin-bottom:8px;
+}
+
+h2{
+font-size:22px;
+margin-bottom:10px;
 }
 
 input,textarea{
 width:100%;
 padding:12px;
+margin-top:10px;
 border:none;
 border-radius:12px;
-margin-top:10px;
 background:#334155;
 color:white;
 }
 
+.light input,.light textarea{
+background:#e5e7eb;
+color:black;
+}
+
 button{
-padding:12px 16px;
+width:100%;
+padding:12px;
+margin-top:10px;
 border:none;
 border-radius:12px;
 background:#22c55e;
 color:white;
+font-size:16px;
 font-weight:bold;
 cursor:pointer;
-margin-top:10px;
-width:100%;
+}
+
+button:hover{
+opacity:.9;
 }
 
 .task{
-background:#334155;
 padding:10px;
+background:#334155;
+margin-top:8px;
 border-radius:10px;
-margin-top:10px;
 }
 
-.chat{
-max-height:220px;
-overflow-y:auto;
+.light .task{
+background:#e5e7eb;
+color:black;
 }
 
 .small{
-opacity:.75;
 font-size:14px;
-margin-top:8px;
+opacity:.8;
+margin-top:10px;
 }
 
-@media(max-width:900px){
-body{
-display:block;
+.row{
+display:flex;
+gap:10px;
 }
-.sidebar{
-width:100%;
-border-right:none;
-border-bottom:1px solid rgba(255,255,255,.08);
+
+.row button{
+flex:1;
 }
+
+.chatbox{
+max-height:250px;
+overflow-y:auto;
+margin-top:10px;
+}
+
+.msg{
+padding:10px;
+border-radius:10px;
+margin-top:8px;
+background:#334155;
+}
+
+.light .msg{
+background:#e5e7eb;
+color:black;
 }
 </style>
 </head>
 
-<body>
+<body id="body">
 
-<div class="sidebar">
-<div class="logo">🚀 Human OS</div>
-
-<div class="menu">
-<a href="#">Dashboard</a>
-<a href="#">Tasks</a>
-<a href="#">Goals</a>
-<a href="#">Habits</a>
-<a href="#">AI Coach</a>
-<a href="#">Billing</a>
-<a href="#">Settings</a>
-</div>
-</div>
-
-<div class="main">
-
-<div class="topbar">
-<h1>Welcome Back</h1>
-<div>Pro Plan 👑</div>
-</div>
-
-<div class="grid">
+<div class="container">
 
 <div class="card">
-<h3>Focus Hours</h3>
-<div class="big">28h</div>
-<p class="small">This Week</p>
+<h1>🚀 Human OS v2</h1>
+<p>Your Smart Productivity System</p>
+<div class="row">
+<button onclick="toggleMode()">🌙 Toggle Mode</button>
+<button onclick="logout()">🔒 Logout</button>
 </div>
+</div>
+
+<div class="card" id="loginCard">
+<h2>🔐 Login</h2>
+<input id="username" placeholder="Enter Username">
+<button onclick="login()">Login</button>
+<p class="small" id="userStatus"></p>
+</div>
+
+<div id="app" style="display:none;">
 
 <div class="card">
-<h3>Tasks Done</h3>
-<div class="big">16</div>
-<p class="small">Last 7 Days</p>
-</div>
-
-<div class="card">
-<h3>Habit Streak</h3>
-<div class="big">21</div>
-<p class="small">Days</p>
-</div>
-
-<div class="card">
-<h3>Revenue Goal</h3>
-<div class="big">$4,200</div>
-<p class="small">Monthly</p>
-</div>
-
-</div>
-
-<div class="card">
-<h2>🎯 Daily Mission</h2>
-<input id="goal" placeholder="Enter today’s main target">
-<button onclick="saveGoal()">Save Mission</button>
+<h2>🎯 Daily Goal</h2>
+<input id="goal" placeholder="Today's Goal">
+<button onclick="saveGoal()">Save Goal</button>
 <p class="small" id="goalText"></p>
 </div>
 
 <div class="card">
-<h2>✅ Task Manager</h2>
-<input id="taskInput" placeholder="Add a task">
+<h2>✅ Tasks</h2>
+<input id="taskInput" placeholder="Add task">
 <button onclick="addTask()">Add Task</button>
 <div id="tasks"></div>
 </div>
 
 <div class="card">
-<h2>🤖 AI Coach</h2>
-<input id="chatInput" placeholder="Ask for guidance">
-<button onclick="coach()">Send</button>
-<div class="chat" id="chatBox"></div>
+<h2>📅 Habit Tracker</h2>
+<div class="row">
+<button onclick="habit('Workout')">Workout</button>
+<button onclick="habit('Read')">Read</button>
+<button onclick="habit('Meditate')">Meditate</button>
+</div>
+<p class="small" id="habitText"></p>
 </div>
 
 <div class="card">
-<h2>🧠 Notes Vault</h2>
-<textarea id="notes" rows="4" placeholder="Store ideas and plans"></textarea>
-<button onclick="saveNotes()">Save Notes</button>
+<h2>🧠 Notes</h2>
+<textarea id="note" rows="4" placeholder="Write notes..."></textarea>
+<button onclick="saveNote()">Save Notes</button>
 <p class="small" id="saved"></p>
 </div>
 
 <div class="card">
-<h2>💳 Upgrade Billing</h2>
-<button onclick="alert('Stripe checkout connect next')">Upgrade to Elite</button>
+<h2>🤖 AI Chat</h2>
+<input id="chatInput" placeholder="Ask AI anything...">
+<button onclick="chat()">Send</button>
+<div class="chatbox" id="chatbox"></div>
+</div>
+
 </div>
 
 </div>
 
 <script>
+function login(){
+let user=document.getElementById("username").value;
+if(user=="") return;
+localStorage.setItem("user",user);
+showApp();
+}
+
+function logout(){
+localStorage.removeItem("user");
+location.reload();
+}
+
+function showApp(){
+let user=localStorage.getItem("user");
+if(user){
+document.getElementById("loginCard").style.display="none";
+document.getElementById("app").style.display="block";
+document.getElementById("userStatus").innerText="Welcome "+user;
+}
+}
+showApp();
+
 function saveGoal(){
-let g=document.getElementById("goal").value;
-localStorage.setItem("goal",g);
-document.getElementById("goalText").innerText="Mission Locked: "+g;
+let goal=document.getElementById("goal").value;
+localStorage.setItem("goal",goal);
+document.getElementById("goalText").innerText="Goal: "+goal;
 }
 document.getElementById("goalText").innerText=
-localStorage.getItem("goal")?"Mission Locked: "+localStorage.getItem("goal"):"";
+localStorage.getItem("goal")?"Goal: "+localStorage.getItem("goal"):"";
 
 function addTask(){
-let t=document.getElementById("taskInput").value;
-if(t=="") return;
+let val=document.getElementById("taskInput").value;
+if(val=="") return;
 let div=document.createElement("div");
 div.className="task";
-div.innerHTML=t;
+div.innerText=val;
 document.getElementById("tasks").appendChild(div);
 document.getElementById("taskInput").value="";
 }
 
-function saveNotes(){
-localStorage.setItem("notes",document.getElementById("notes").value);
+function saveNote(){
+let note=document.getElementById("note").value;
+localStorage.setItem("note",note);
 document.getElementById("saved").innerText="Saved";
 }
-document.getElementById("notes").value=
-localStorage.getItem("notes")||"";
+document.getElementById("note").value=localStorage.getItem("note")||"";
 
-function coach(){
-let q=document.getElementById("chatInput").value;
-if(q=="") return;
+function habit(name){
+document.getElementById("habitText").innerText=name+" completed today ✅";
+}
 
-let box=document.getElementById("chatBox");
+function toggleMode(){
+document.getElementById("body").classList.toggle("light");
+}
+
+function chat(){
+let input=document.getElementById("chatInput").value;
+if(input=="") return;
+
+let box=document.getElementById("chatbox");
 
 let user=document.createElement("div");
-user.className="task";
-user.innerText="You: "+q;
+user.className="msg";
+user.innerText="You: "+input;
 box.appendChild(user);
 
 let ai=document.createElement("div");
-ai.className="task";
+ai.className="msg";
 
 let replies=[
-"Focus on the highest leverage move first.",
-"Reduce noise and execute one mission.",
-"Systems beat motivation every time.",
-"Discipline creates freedom.",
-"Move now. Improve later."
+"Stay focused and execute.",
+"Break it into smaller steps.",
+"You are capable of more.",
+"Consistency beats intensity.",
+"Take action now."
 ];
 
 ai.innerText="AI: "+replies[Math.floor(Math.random()*replies.length)];
@@ -270,4 +284,4 @@ box.scrollTop=box.scrollHeight;
 </script>
 
 </body>
- </html>
+            </html>
